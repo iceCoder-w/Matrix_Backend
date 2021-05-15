@@ -51,12 +51,12 @@ public class TblFile implements Serializable {
     @ApiModelProperty(value = "备用字段1")
     private Integer ext1;
 
-    @TableField(fill = FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
+    @TableField(fill = FieldFill.INSERT)
     private Date createAt;
 
-    @TableField(fill = FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "更新时间")
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modifiedAt;
 
 }

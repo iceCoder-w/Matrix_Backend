@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.api.R;
 import com.wang.commonutils.Response;
 import com.wang.fileservice.entity.TblFile;
 import com.wang.fileservice.service.TblFileService;
+import com.wang.servicebase.exceptionhandler.MatrixException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -53,6 +54,12 @@ public class TblFileController {
         }else {
             return Response.error().message("添加失败");
         }
+    }
+
+    @ApiOperation(value = "测试异常")
+    @GetMapping("getException")
+    public Response getException(){
+        throw new MatrixException(200001,"测试异常");
     }
 
 

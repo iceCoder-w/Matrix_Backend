@@ -1,6 +1,7 @@
 package com.wang.fileservice.controller;
 
 
+import com.wang.commonutils.Response;
 import com.wang.fileservice.entity.TblFile;
 import com.wang.fileservice.service.TblFileService;
 import io.swagger.annotations.Api;
@@ -35,6 +36,13 @@ public class TblFileController {
     @GetMapping("findAllFile")
     public List<TblFile> list(){
         return fileService.list(null);
+    }
+
+    @ApiOperation(value = "测试Response返回体")
+    @GetMapping("getFileList")
+    public Response getAll(){
+        List<TblFile> list = fileService.list(null);
+        return Response.ok().data("filelist",list);
     }
 
 }

@@ -71,13 +71,12 @@
     <script>
         $('#upload-container').click(function (event){
             $('#picker').find('input').click();
-            console.log('hello')
         })
 
         var uploader = WebUploader.create({
             auto: true,
             swf: 'Uploader.swf',
-            server: 'http://localhost:5001/fileservice/upload/uploadFile',
+            server: 'http://localhost:4001/fileservice/upload/uploadFile',
             dnd: '#upload-container',
             pick: '#picker',
             multiple: true,
@@ -121,10 +120,10 @@
         })
 
         // 进度条
-        uploader.on('uploadProgress', function (file, percetage) {
-            console.log(percetage * 100 +'%')
+        uploader.on('uploadProgress', function (file, percentage) {
+            console.log(percentage * 100 +'%')
             var width = $('.upload-item').width()
-            $('.' + file.id).width(width*percetage)
+            $('.' + file.id).width(width*percentage)
         })
 
         uploader.on('uploadSuccess', function (file, response) {

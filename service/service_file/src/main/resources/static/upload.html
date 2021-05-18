@@ -24,7 +24,7 @@
     }
 
     #upload-list{
-        height: 400px;
+        height: 200px;
         border: 1px solid #EEE;
         border-radius: 5px;
         margin-top: 10px;
@@ -68,17 +68,25 @@
 
     <button id="picker">点击上传文件</button>
 
+
+    <div class="row">
+        <button id="ctlBtn" class="btn btn-default">开始上传</button>
+    </div>
+
     <script>
         $('#upload-container').click(function (event){
-            $('#picker').find('input').click();
+            $('#picker').find('input').click()
         })
+        state = 'pending'
+        $btn = $('#ctlBtn')
 
         var uploader = WebUploader.create({
-            auto: true,
+            auto: false,
             swf: 'Uploader.swf',
             server: 'http://localhost:4001/fileservice/upload/uploadFile',
             dnd: '#upload-container',
             pick: '#picker',
+            // multiple: false,
             multiple: true,
             chunked: true,
             threads: 20,
@@ -104,6 +112,7 @@
                 '<span data-file_id="' + file.id + '" class="btn-retry">重试</span>' +
                 '<div class="percentage ' + file.id + '" style="width: 0%;"></div>' +
                 '</div>'
+            +'<p class="state">等待上传...</p>'
 
             $('#upload-list').append(html);
             uploader.md5File(file)
@@ -118,6 +127,34 @@
                 console.log('MD5:' + val)
             })
         })
+
+        uploader.on('all', function (type) {
+            if (type === 'startUpload') {
+                state = 'uploading';
+            } else if (type === 'stopUpload') {
+                state = 'paused';
+            } else if (type === 'uploadFinished') {
+                state = 'done';
+            }
+            if (state === 'uploading') {
+                $btn.text('暂停上传');
+            } else {
+                $btn.text('开始上传');
+            }
+        });
+
+        $btn.on('click', function () {
+            if (state === 'uploading') {
+                uploader.stop();
+                $('.state').text('暂停上传')
+            }else if (state === 'done') {
+                $('.state').text('上传完成')
+            } else {
+                $('.state').text('处理中，请稍等')
+                uploader.upload();
+                $('.state').text('正在上传')
+            }
+        });
 
         // 进度条
         uploader.on('uploadProgress', function (file, percentage) {

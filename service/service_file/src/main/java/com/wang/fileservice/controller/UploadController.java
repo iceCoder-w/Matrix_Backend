@@ -66,7 +66,7 @@ public class UploadController {
                     }
                 }
             }
-            System.out.println("chunk: "+schunk+" name: "+name);
+            System.out.println("chunk: "+schunk+" name: "+name+" chunks: "+schunks);
             // 遍历文件域信息
             for (FileItem item : items){
                 if (!item.isFormField()){ // 文件域

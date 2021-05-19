@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.fileservice.mapper.ChunkInfoMapper">
+    <resultMap id="BaseResultMap" type="com.wang.fileservice.entity.ChunkInfo">
+        <!--@mbg.generated-->
+        <!--@Table t_chunk_info-->
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="CHUNK_NUMBER" jdbcType="DECIMAL" property="chunkNumber"/>
+        <result column="CHUNK_SIZE" jdbcType="DECIMAL" property="chunkSize"/>
+        <result column="CURRENT_CHUNKSIZE" jdbcType="DECIMAL" property="currentChunkSize"/>
+        <result column="IDENTIFIER" jdbcType="VARCHAR" property="identifier"/>
+        <result column="FILENAME" jdbcType="VARCHAR" property="filename"/>
+        <result column="RELATIVE_PATH" jdbcType="VARCHAR" property="relativePath"/>
+        <result column="TOTAL_CHUNKS" jdbcType="DECIMAL" property="totalChunks"/>
+        <result column="TOTAL_SIZE" jdbcType="INTEGER" property="totalSize"/>
+        <result column="FILETYPE" jdbcType="VARCHAR" property="filetype"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        ID, CHUNK_NUMBER, CHUNK_SIZE, CURRENT_CHUNKSIZE, IDENTIFIER, FILENAME, RELATIVE_PATH,
+        TOTAL_CHUNKS, TOTAL_SIZE, FILETYPE
+    </sql>
+
+    <select id="selectChunkNumbers" parameterType="com.wang.fileservice.entity.ChunkInfo" resultType="int">
+        select CHUNK_NUMBER
+        from CHUNK_INFO
+        where IDENTIFIER = #{identifier,jdbcType=VARCHAR}
+          and FILENAME = #{filename,jdbcType=VARCHAR}
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wang.fileservice.mapper.FileInfoMapper">
+    <resultMap id="BaseResultMap" type="com.wang.fileservice.entity.FileInfo">
+        <!--@mbg.generated-->
+        <!--@Table FILE_INFO-->
+        <id column="ID" jdbcType="VARCHAR" property="id"/>
+        <result column="FILENAME" jdbcType="VARCHAR" property="filename"/>
+        <result column="IDENTIFIER" jdbcType="VARCHAR" property="identifier"/>
+        <result column="TOTAL_SIZE" jdbcType="DECIMAL" property="totalSize"/>
+        <result column="LOCATION" jdbcType="VARCHAR" property="location"/>
+        <result column="FILETYPE" jdbcType="VARCHAR" property="filetype"/>
+        <result column="REF_PROJECT_ID" jdbcType="VARCHAR" property="refProjectId"/>
+        <result column="UPLOAD_USER" jdbcType="INTEGER" property="uploadUser"/>
+        <result column="UPLOAD_TIME" jdbcType="TIMESTAMP" property="uploadTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        ID, FILENAME, IDENTIFIER, TOTAL_SIZE, `LOCATION`, FILETYPE, REF_PROJECT_ID, UPLOAD_USER,
+        UPLOAD_TIME
+    </sql>
+    <select id="selectFileList" resultMap="BaseResultMap" parameterType="com.wang.fileservice.entity.FileInfo">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM FILE_INFO
+        <if test="filename != null">
+            WHERE FILENAME = #{filename,jdbcType=VARCHAR}
+        </if>
+        ORDER BY UPLOAD_TIME
+    </select>
+</mapper>

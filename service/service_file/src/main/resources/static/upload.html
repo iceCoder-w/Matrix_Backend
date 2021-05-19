@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>webuploader</title>
 </head>
-<link rel="stylesheet" href="webuploader.css">
+<!--<link rel="stylesheet" href="webuploader.css">-->
 <link rel="stylesheet" type="text/css" href="webuploader.css">
 <!--<link rel="stylesheet" type="text/css" href="style.css" />-->
 <script src="jquery.js"></script>
@@ -84,15 +84,16 @@
             auto: false,
             swf: 'Uploader.swf',
             server: 'http://localhost:4001/fileservice/upload/uploadFile',
-            dnd: '#upload-container',
+            dnd: '#upload-container', // 指定Drag And Drop拖拽的容器
+            disableGlobalDnd: '#upload-container', // 禁掉整个页面的拖拽功能
             pick: '#picker',
-            // multiple: false,
-            multiple: true,
+            // prepareNextFile: true, // 在文件传输时提前把下一个文件准备好
+            multiple: true, // 同时选择多个文件
             chunked: true,
-            threads: 20,
+            threads: 1,
             method: 'POST',
             fileSizeLimit: 1024*1024*1024*10,
-            fileSingleSizeLimit: 1024*1024*1024,
+            fileSingleSizeLimit: 1024*1024*1024*10,
             fileVal: 'upload'
         })
 

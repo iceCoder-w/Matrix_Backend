@@ -43,12 +43,18 @@ public class ChunkInfoServiceImpl extends ServiceImpl<ChunkInfoMapper, ChunkInfo
     @Override
     public ChunkResult checkChunkState(ChunkInfo chunkInfo, HttpServletResponse response) {
         ChunkResult chunkResult = new ChunkResult();
-        String file = "C:\\fileItem\\" + chunkInfo.getFileName();
-        if(FileInfoUtils.fileExists(file)) {
+        // todo:多一次判断文件大小
+        String path = "C:\\fileItem\\" + chunkInfo.getFileName();
+        File f = new File(path);
+        if (f.exists() && f.isFile()){
+            System.out.println("已经存在的文件的大小："+f.length());
+        }
+        System.out.println("前端传来的文件的大小："+chunkInfo.getTotalSize());
+        if(FileInfoUtils.fileExists(path) && chunkInfo.getTotalSize()==f.length()) {
             chunkResult.setSkipUpload(true);
-            chunkResult.setLocation(file);
+            chunkResult.setLocation(path);
             response.setStatus(HttpServletResponse.SC_OK);
-            chunkResult.setMessage("完整文件已存在，直接跳过上传，实现秒传");
+            chunkResult.setMessage(chunkInfo.getFileName() + "已一键秒传~");
             return chunkResult;
         }
         ArrayList<Integer> list = chunkInfoMapper.selectChunkNumbers(chunkInfo);

@@ -1,5 +1,6 @@
 package com.wang.fileservice.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.wang.fileservice.entity.ChunkInfo;
 import com.wang.fileservice.response.ChunkResult;
 import com.wang.fileservice.service.ChunkInfoService;
@@ -61,11 +62,11 @@ public class SimpleUploaderController {
      * @param chunk
      * @return
      */
-//    @PostMapping("/uploadFile")
-//    public Integer uploadChunk(ChunkInfo chunk) {
-//        System.out.println("第二次："+chunk);
-//        return chunkInfoService.uploadFile(chunk);
-//    }
+    @PostMapping("/uploadFile2")
+    public Integer uploadChunk(ChunkInfo chunk) {
+        System.out.println("第二次："+chunk);
+        return chunkInfoService.uploadFile(chunk);
+    }
 
 
 
@@ -76,7 +77,10 @@ public class SimpleUploaderController {
         Integer schunk = null;
         Integer schunks = null;
         String name = null;
+        String identifier = null;
         String uploadPath = "C:\\fileItem";
+
+        ChunkInfo chunk = new ChunkInfo();
 
         BufferedOutputStream os = null;
 
@@ -98,12 +102,20 @@ public class SimpleUploaderController {
                 if (item.isFormField()) { // 表单域，非文件域
                     if ("chunkNumber".equals(item.getFieldName())) {
                         schunk = Integer.parseInt(item.getString(utf8));
+                        chunk.setChunkNumber(Long.valueOf(schunk));
                     }
                     if ("totalChunks".equals(item.getFieldName())) {
                         schunks = Integer.parseInt(item.getString(utf8));
+                        chunk.setTotalChunks(Long.valueOf(schunks));
                     }
                     if ("filename".equals(item.getFieldName())) {
                         name = item.getString(utf8);
+                        chunk.setFilename(name);
+                    }
+                    if ("identifier".equals(item.getFieldName())) {
+                        identifier = item.getString(utf8);
+                        chunk.setIdentifier(identifier);
+                        chunk.setId(identifier + "_" + schunk);
                     }
                 }
             }
@@ -120,6 +132,7 @@ public class SimpleUploaderController {
                         File tempFile = new File(uploadPath, temFileName);
                         if (!tempFile.exists()){ // 当某个分片不存在时，才需要写入（断点续传）
                             item.write(tempFile);
+                            chunkInfoService.save(chunk);
                         }
                     }
                 }
@@ -140,6 +153,12 @@ public class SimpleUploaderController {
                     os.write(bytes);
                     os.flush();
                     file.delete();
+                    for (Integer integer = schunks+1; integer > 0; integer--) {
+                        chunkInfoService.removeById(identifier + "_" + integer);
+//                        QueryWrapper<ChunkInfo> wrapper = new QueryWrapper<>();
+//                        wrapper.eq("identifier",identifier);
+//                        chunkInfoService.remove(wrapper);
+                    }
                 }
                 os.flush();
             }

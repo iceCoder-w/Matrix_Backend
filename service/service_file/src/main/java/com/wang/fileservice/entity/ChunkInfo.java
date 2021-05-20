@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -15,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @TableName(value = "chunk_info")
 public class ChunkInfo {
     /**
@@ -80,8 +83,9 @@ public class ChunkInfo {
     /**
      * 块内容
      */
-//    @TableField(exist = false)
-    private MultipartFile upfile;
+    @TableField(exist = false)
+//    @RequestParam("contents")
+    private MultipartFile contents;
 
     public static final String COL_ID = "ID";
 

@@ -43,7 +43,7 @@ public class ChunkInfoServiceImpl extends ServiceImpl<ChunkInfoMapper, ChunkInfo
     @Override
     public ChunkResult checkChunkState(ChunkInfo chunkInfo, HttpServletResponse response) {
         ChunkResult chunkResult = new ChunkResult();
-        String file = uploadFolder + File.separator + chunkInfo.getIdentifier() + File.separator + chunkInfo.getFileName();
+        String file = "C:\\fileItem\\" + chunkInfo.getFileName();
         if(FileInfoUtils.fileExists(file)) {
             chunkResult.setSkipUpload(true);
             chunkResult.setLocation(file);
@@ -71,7 +71,7 @@ public class ChunkInfoServiceImpl extends ServiceImpl<ChunkInfoMapper, ChunkInfo
     @Override
     public Integer uploadFile(ChunkInfo chunk) {
         Integer apiRlt = HttpServletResponse.SC_OK;
-        MultipartFile file = chunk.getUpfile();
+        MultipartFile file = chunk.getContents();
         System.out.println("file:"+file);
         try {
             byte[] bytes = file.getBytes();

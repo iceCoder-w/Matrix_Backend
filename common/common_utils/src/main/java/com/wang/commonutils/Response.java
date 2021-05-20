@@ -26,7 +26,7 @@ public class Response {
     @ApiModelProperty(value = "返回数据")
     private Map<String, Object> data = new HashMap<String, Object>();
 
-    private Response(){};
+    public Response(){};
 
     public static Response ok(){
         Response r = new Response();

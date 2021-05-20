@@ -1,6 +1,7 @@
 package com.wang.fileservice.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.wang.commonutils.Response;
 import com.wang.fileservice.entity.ChunkInfo;
 import com.wang.fileservice.response.ChunkResult;
 import com.wang.fileservice.service.ChunkInfoService;
@@ -8,12 +9,10 @@ import com.wang.fileservice.service.FileInfoService;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,7 +71,7 @@ public class SimpleUploaderController {
 
     @RequestMapping("/uploadFile")
     @ResponseBody
-    public void upload(HttpServletRequest request, HttpServletResponse response){
+    public Response upload(HttpServletRequest request, HttpServletResponse response){
         response.setCharacterEncoding(utf8);
         Integer schunk = null;
         Integer schunks = null;
@@ -162,7 +161,9 @@ public class SimpleUploaderController {
                 }
                 os.flush();
             }
-            response.getWriter().write("上传成功：" + name);
+//            response.getWriter().write("上传成功：" + name);
+//            response.addHeader("message","已上传" + name);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -174,6 +175,7 @@ public class SimpleUploaderController {
                 e.printStackTrace();
             }
         }
+        return new Response().message("已上传：" + name);
     }
 
 }
